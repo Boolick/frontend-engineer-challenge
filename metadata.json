@@ -1,0 +1,5 @@
+{
+  "name": "Orbitto Auth",
+  "description": "Production-ready authentication frontend for Orbitto project. Built with Next.js 15, FSD, XState, and Tailwind v4.",
+  "requestFramePermissions": []
+}
