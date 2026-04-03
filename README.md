@@ -1,116 +1,38 @@
-# Advanced Frontend Engineer Challenge
+# Orbitto Auth Frontend (Atlantis Engineer Challenge)
 
-Искренне благодарим вас за время и внимание к этому челленджу и надеемся на долгосрочную совместную командную работу
+Production-ready Authentication Frontend built with **Next.js 15**, **FSD**, **XState**, and **Tailwind v4**.
 
-Подписывайтесь на канал с новыми челленджами: [@atls_challenges](https://t.me/atls_challenges)
+## 🚀 Architecture: Feature-Sliced Design (FSD)
+The project follows a strict FSD structure to ensure scalability and clear boundaries:
+- **app**: Next.js App Router, global styles, and providers.
+- **pages**: Full-page assemblies.
+- **widgets**: Complex UI blocks (e.g., `LoginForm`, `RegisterForm`).
+- **features**: User-facing actions (e.g., `useAuth` hook).
+- **entities**: Domain logic and business models (e.g., `authMachine`, Zod schemas).
+- **shared**: Reusable UI Kit, API clients, and utilities.
 
-Не забудьте сперва поставить Star. Спасибо!
+## 🧠 State Management: XState v5
+Authentication is a complex state machine, not just a set of booleans. We use XState to handle:
+- **Rate Limiting (429)**: Automatic transition to a `rateLimited` state with a countdown timer.
+- **BFF Integration**: Orchestrating requests between the client and Next.js Route Handlers.
+- **Predictable Transitions**: Ensuring the UI never enters an invalid state (e.g., submitting while already authenticated).
 
-Этот репозиторий — инженерный челлендж для кандидатов на frontend позиции
+## 🔒 Security: BFF (Backend For Frontend)
+To protect user sessions, we implemented a BFF pattern:
+- **HttpOnly Cookies**: Access and Refresh tokens are stored in secure, HttpOnly cookies. They are inaccessible to client-side JavaScript, mitigating XSS risks.
+- **Proxying**: The Next.js Route Handlers (`/api/auth/*`) act as a secure proxy to the Go-based backend.
+- **Middleware Protection**: Route protection is handled server-side in `middleware.ts`.
 
-Задача узкая по продукту и широкая по инженерным решениям: нам важно увидеть не только верстку, а умение проектировать клиентскую часть под реальный backend
+## 🎨 UI/UX Decisions
+- **Tailwind v4**: Leveraging the latest CSS-first configuration for design tokens.
+- **Motion (Framer Motion)**: Used for the "Floating Label" input effect and smooth page transitions.
+- **Accessibility**: Semantic HTML and focus management for all forms.
 
-## Контекст
+## 🛠️ Trade-offs & Assumptions
+- **Backend Mocking**: Since the external Go backend might be offline, the `useAuth` hook is designed to handle real API responses but can be easily extended with MSW for local development.
+- **Refresh Token Rotation**: Assumed the backend supports rotation; the BFF layer is ready to handle refresh logic in the middleware or a dedicated route.
 
-Вам нужно взять любой понравившийся fork [backend/fullstack-челленджа](https://github.com/atls-academy/engineer-challenge) и реализовать под него frontend для 3 сценариев:
-1. Регистрация
-2. Авторизация
-3. Восстановление пароля
-
-Дизайн остается тем же: [Figma-файл Orbitto Service](https://www.figma.com/design/31KetUbya482vMSGgyiNIf/Orbitto-%7C-Service--Copy-?node-id=102-12806&t=TMlkJ3c3j3vJF5fb-4)
-Файл доступен для создания копии в ваш workspace, но права на редактирование исходного файла не выдаются
-Запросы на доступ к редактированию исходного файла не рассматриваются
-
-## Что важно
-
-Решение должно демонстрировать инженерную зрелость:
-- Декомпозиция интерфейса и переиспользуемость компонентов
-- Управление состоянием и асинхронными сценариями
-- Работа с контрактами backend (ошибки, edge-cases, нестабильные ответы)
-- Доступность (a11y), UX-состояния и производительность
-- Осознанная аргументация trade-offs
-
-`Просто сверстать макет` не считается целевым уровнем решения для этого челленджа
-
-## Обязательные требования
-
-1. UI и UX
-- Реализуйте все экраны и состояния auth-флоу по дизайну
-- Обработайте loading/error/empty/success-состояния
-- Обеспечьте адаптивность минимум для desktop и mobile
-
-2. Интеграция с backend
-- Подключитесь к выбранному fork и его контрактам
-- Обработайте реальные ответы сервиса, включая неуспешные сценарии
-- Зафиксируйте в README предположения по контрактам
-
-3. Архитектура frontend
-- Покажите структуру слоев/модулей и границы ответственности
-- Избегайте проекта в формате `все в одном components/ и services/`
-- Опишите ключевые инженерные решения в README
-
-4. Качество и надежность
-- Добавьте тесты критичных пользовательских сценариев (unit/integration/e2e — на ваш выбор)
-- Добавьте базовую защиту от типичных UX-проблем (повторные отправки, race conditions, устаревшие запросы)
-
-5. Технологические решения
-- Фреймворк и стек выбираете самостоятельно
-- Ограничений по стеку нет: React, Vue, Angular, Svelte, WASM и любые другие варианты
-- В README обязательно объясните выбор и альтернативы, которые рассматривали
-
-## Ограничения и анти-паттерны
-
-Следующие подходы считаются слабым решением:
-- Визуальный клон без инженерной структуры
-- Игнорирование неуспешных ответов и ошибок backend
-- Локальные хаки без объяснения trade-offs и последствий
-- Полная завязка на конкретный фреймворк без аргументации
-
-## Что нужно сдать
-
-1. Исходный код frontend в вашем fork
-2. Обновленный README в вашем fork с:
-- как запустить проект
-- явной ссылкой на выбранный backend fork
-- как устроена архитектура frontend
-- какие trade-offs были приняты
-- что бы вы сделали следующим шагом в production-версии
-- ссылкой на демо или скринкаст основных сценариев (если есть)
-3. Набор тестов и инструкции по запуску
-
-## Формат выполнения
-
-1. Выберите backend fork, с которым хотите работать
-2. Сделайте fork этого репозитория
-3. Реализуйте frontend-решение под выбранный backend
-4. Оформите результат в README
-5. Отправьте в отклике:
-- ссылку на ваш frontend fork
-- ссылку на `moodboard`
-- ссылку на `anti-moodboard`
-
-## Использование ИИ
-
-- Использование ИИ-инструментов в рамках челленджа разрешено
-- Если используете ИИ, добавьте в ваш fork папку `.agents`, чтобы было видно, как вы строили процесс решения
-
-## Критерии оценки
-
-1. Качество архитектуры frontend и управляемость кода
-2. Корректность auth-флоу и интеграции с backend
-3. Качество UX-состояний, обработки ошибок и адаптивности
-4. Тестируемость и надежность ключевых сценариев
-5. Ясность инженерной аргументации в README
-
-## Бонусные сигналы
-
-- Продуманная мини-дизайн-система или слой UI-kit внутри решения
-- Стратегия типизации контрактов (например, codegen/typed clients)
-- Базовая наблюдаемость фронта (telemetry/error tracking) с аргументацией, где это уместно
-- Использование микрофронтов, если это уместно и инженерно оправдано
-- Использование FSD с аргументацией границ и композиции слоев
-- Следование SOLID в архитектуре клиентской части
-
-## Важно
-
-Нас интересует не идеальный пиксель-перфект любой ценой, а качество инженерного мышления и способность строить устойчивый frontend под реальный backend
+## 📦 Next Steps for Production
+1. **Internationalization (i18n)**: Implement `next-intl` for multi-language support.
+2. **E2E Testing**: Add Playwright tests for the full auth flow.
+3. **Observability**: Integrate Sentry for error tracking and OpenTelemetry for performance monitoring.

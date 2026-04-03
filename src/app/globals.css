@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@theme {
+  /* Orbitto Design Tokens */
+  --color-background: #FFFFFF;
+  --color-foreground: #111827;
+  
+  --color-primary: #4F46E5;
+  --color-primary-foreground: #FFFFFF;
+  
+  --color-secondary: #F3F4F6;
+  --color-secondary-foreground: #1F2937;
+  
+  --color-muted: #F9FAFB;
+  --color-muted-foreground: #6B7280;
+  
+  --color-accent: #EEF2FF;
+  --color-accent-foreground: #4338CA;
+  
+  --color-destructive: #EF4444;
+  --color-destructive-foreground: #FFFFFF;
+  
+  --color-border: #E5E7EB;
+  --color-input: #E5E7EB;
+  --color-ring: #4F46E5;
+
+  --radius-lg: 0.75rem;
+  --radius-md: 0.5rem;
+  --radius-sm: 0.25rem;
+
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
