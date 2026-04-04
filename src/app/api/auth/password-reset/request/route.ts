@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     });
 
     if (!response.ok) {
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
       return NextResponse.json(
         { error: data.error || data.message || 'Failed to request password reset' },
         { status: response.status }
