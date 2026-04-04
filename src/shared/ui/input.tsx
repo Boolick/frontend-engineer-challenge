@@ -1,8 +1,9 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { cn } from '@/shared/lib/utils';
+import * as React from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { useTranslations } from "next-intl";
+import { cn } from "@/shared/lib/utils";
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -10,67 +11,74 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 }
 
 const FloatingInput = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, label, error, type, value, onChange, onFocus, onBlur, ...props }, ref) => {
-    const [isFocused, setIsFocused] = React.useState(false);
-    const hasValue = value !== undefined && value !== '';
-
-    const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-      setIsFocused(true);
-      onFocus?.(e);
-    };
-
-    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-      setIsFocused(false);
-      onBlur?.(e);
-    };
+  (
+    {
+      className,
+      label,
+      error,
+      type,
+      value,
+      onChange,
+      onFocus,
+      onBlur,
+      ...props
+    },
+    ref,
+  ) => {
+    const t = useTranslations("auth.errors");
+    const localizedError = error && t.has(error) ? t(error) : error;
 
     return (
-      <div className="relative w-full group">
-        <div className={cn(
-          "relative flex items-center border rounded-lg transition-all duration-200 bg-background",
-          isFocused ? "border-primary ring-1 ring-primary/20" : "border-input",
-          error ? "border-destructive ring-destructive/20" : "",
-          className
-        )}>
+      <div className="relative w-full group pb-5">
+        <div
+          className={cn(
+            "floating-label-input relative border-b transition-colors py-2 bg-transparent",
+            error
+              ? "border-destructive text-destructive"
+              : "border-input focus-within:border-primary text-foreground",
+            className,
+          )}
+        >
           <input
             {...props}
             ref={ref}
             type={type}
             value={value}
             onChange={onChange}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            className="w-full px-4 pt-6 pb-2 text-sm bg-transparent outline-none placeholder-transparent"
+            onFocus={onFocus}
+            onBlur={onBlur}
+            className="peer block w-full bg-transparent border-0 px-0 py-1 text-foreground focus:ring-0 sm:text-sm placeholder-transparent outline-none z-10 relative"
             placeholder={label}
           />
-          <motion.label
-            initial={false}
-            animate={{
-              top: (isFocused || hasValue) ? '0.5rem' : '1.25rem',
-              fontSize: (isFocused || hasValue) ? '0.75rem' : '0.875rem',
-              color: error ? 'var(--color-destructive)' : (isFocused ? 'var(--color-primary)' : 'var(--color-muted-foreground)')
-            }}
-            className="absolute left-4 pointer-events-none transition-colors"
+          <label
+            className={cn(
+              "absolute top-2 -z-0 origin-[0] -translate-y-6 scale-75 transform duration-300 pointer-events-none",
+              "peer-placeholder-shown:translate-y-1 peer-placeholder-shown:scale-100",
+              "peer-focus:-translate-y-6 peer-focus:scale-75",
+              error
+                ? "text-destructive"
+                : "text-muted-foreground peer-focus:text-primary",
+            )}
           >
             {label}
-          </motion.label>
+          </label>
         </div>
         <AnimatePresence>
-          {error && (
+          {localizedError && (
             <motion.p
-              initial={{ opacity: 0, y: -10 }}
+              initial={{ opacity: 0, y: -5 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="mt-1 text-xs text-destructive font-medium"
+              exit={{ opacity: 0, y: -5 }}
+              className="absolute bottom-1 left-0 text-[11px] text-destructive font-medium"
             >
-              {error}
+              {localizedError}
             </motion.p>
           )}
         </AnimatePresence>
       </div>
     );
-  }
+  },
 );
-FloatingInput.displayName = 'FloatingInput';
+FloatingInput.displayName = "FloatingInput";
 
 export { FloatingInput };

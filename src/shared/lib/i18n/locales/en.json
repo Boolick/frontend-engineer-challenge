@@ -1,0 +1,74 @@
+{
+  "auth": {
+    "login": {
+      "title": "Welcome back",
+      "email_label": "Email address",
+      "password_label": "Password",
+      "submit": "Sign in",
+      "forgot_password": "Forgot password?",
+      "register_prompt": "Don't have an account?",
+      "register_link": "Create account"
+    },
+    "register": {
+      "title": "Create account",
+      "email_label": "Email address",
+      "password_label": "Password",
+      "confirm_password_label": "Confirm password",
+      "submit": "Sign up",
+      "login_prompt": "Already have an account?",
+      "login_link": "Sign in"
+    },
+    "forgot_password": {
+      "title": "Reset password",
+      "email_label": "Email address",
+      "submit": "Send reset link",
+      "back_to_login": "Back to login",
+      "success_message": "Check your email for reset instructions",
+      "login_prompt": "Remembered your password?",
+      "login_link": "Sign in"
+    },
+    "reset_password": {
+      "title": "New password",
+      "password_label": "New password",
+      "confirm_password_label": "Confirm password",
+      "submit": "Save",
+      "success_message": "Password changed successfully",
+      "login_link": "Go to login"
+    },
+    "errors": {
+      "invalid email format": "Invalid email address",
+      "password_required": "Password is required",
+      "password does not meet policy": "Password must be at least 8 characters, include uppercase, lowercase, numbers, and special characters",
+      "passwords_mismatch": "Passwords don't match",
+      "rate_limited": "Too many attempts. Please wait.",
+      "too many requests": "Too many attempts. Please wait.",
+      "too many reset requests": "Too many reset requests. Please wait.",
+      "email already exists": "This email is already registered",
+      "reset token expired": "Reset link has expired",
+      "reset token already used": "This reset link was already used",
+      "retry_in": "Retry in {seconds}s",
+      "invalid_reset_token": "Invalid or missing reset token. Please request a new link.",
+      "invalid_credentials": "Invalid credentials",
+      "login_failed": "Login failed",
+      "registration_failed": "Registration failed",
+      "password_reset_request_failed": "Failed to request reset",
+      "password_reset_failed": "Failed to reset password"
+    }
+  },
+  "dashboard": {
+    "brand": "Orbitto",
+    "sign_out": "Sign out",
+    "profile_status": "Profile Status",
+    "auth_status": "Authenticated via BFF",
+    "completion": "75% Complete"
+  },
+  "common": {
+    "brand": "Orbitto",
+    "loading": "Loading...",
+    "language": {
+      "ru": "RU",
+      "en": "EN"
+    }
+  }
+}
+

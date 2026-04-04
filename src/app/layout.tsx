@@ -1,6 +1,14 @@
 import { Inter, JetBrains_Mono } from 'next/font/google'
 import { Providers } from './providers';
 import './globals.css';
+import { getLocale } from 'next-intl/server';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  icons: {
+    icon: '/favicon.svg',
+  },
+};
 
 const inter = Inter({
   subsets: ['latin'],
@@ -12,13 +20,15 @@ const jetbrainsMono = JetBrains_Mono({
   variable: '--font-mono',
 })
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const locale = await getLocale();
+
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
+    <html lang={locale} className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <body suppressHydrationWarning className="antialiased font-sans bg-background text-foreground">
         <Providers>
           {children}

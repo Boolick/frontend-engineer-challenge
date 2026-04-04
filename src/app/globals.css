@@ -1,12 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  /* Orbitto Design Tokens */
   --color-background: #FFFFFF;
   --color-foreground: #111827;
   
-  --color-primary: #4F46E5;
+  --color-primary: #38BDF8;
   --color-primary-foreground: #FFFFFF;
+  
+  --color-background-illustration: #E9EDF1;
   
   --color-secondary: #F3F4F6;
   --color-secondary-foreground: #1F2937;
@@ -22,11 +23,14 @@
   
   --color-border: #E5E7EB;
   --color-input: #E5E7EB;
-  --color-ring: #4F46E5;
+  --color-ring: #38BDF8;
+  --color-glass-border: rgba(255, 255, 255, 0.3);
+  --backdrop-blur-glass: 20px;
 
   --radius-lg: 0.75rem;
   --radius-md: 0.5rem;
   --radius-sm: 0.25rem;
+  --radius-button: 0.5rem;
 
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
@@ -38,5 +42,12 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .floating-label-input:focus-within label,
+  .floating-label-input input:not(:placeholder-shown) + label {
+    @apply -translate-y-6 scale-75 text-primary;
   }
 }

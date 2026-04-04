@@ -1,0 +1,74 @@
+{
+  "auth": {
+    "login": {
+      "title": "Войти в систему",
+      "email_label": "Введите e-mail",
+      "password_label": "Введите пароль",
+      "submit": "Войти",
+      "forgot_password": "Забыли пароль?",
+      "register_prompt": "Еще не зарегистрированы?",
+      "register_link": "Регистрация"
+    },
+    "register": {
+      "title": "Создать аккаунт",
+      "email_label": "Введите e-mail",
+      "password_label": "Введите пароль",
+      "confirm_password_label": "Подтвердите пароль",
+      "submit": "Зарегистрироваться",
+      "login_prompt": "Уже есть аккаунт?",
+      "login_link": "Войти"
+    },
+    "forgot_password": {
+      "title": "Восстановление пароля",
+      "email_label": "Введите e-mail",
+      "submit": "Отправить ссылку",
+      "back_to_login": "Вернуться к входу",
+      "success_message": "Проверьте почту для инструкций по сбросу",
+      "login_prompt": "Вспомнили пароль?",
+      "login_link": "Войти"
+    },
+    "reset_password": {
+      "title": "Новый пароль",
+      "password_label": "Новый пароль",
+      "confirm_password_label": "Подтвердите пароль",
+      "submit": "Сохранить",
+      "success_message": "Пароль успешно изменен",
+      "login_link": "Перейти к входу"
+    },
+    "errors": {
+      "invalid email format": "Некорректный e-mail адрес",
+      "password_required": "Введите пароль",
+      "password does not meet policy": "Пароль должен содержать минимум 8 символов, включая строчные и заглавные буквы, цифры и спецсимволы",
+      "passwords_mismatch": "Пароли не совпадают",
+      "rate_limited": "Слишком много попыток. Пожалуйста, подождите.",
+      "too many requests": "Слишком много попыток. Пожалуйста, подождите.",
+      "too many reset requests": "Слишком много запросов на сброс. Пожалуйста, подождите.",
+      "email already exists": "Этот e-mail уже зарегистрирован",
+      "reset token expired": "Срок действия ссылки истек",
+      "reset token already used": "Эта ссылка уже была использована",
+      "retry_in": "Повторите через {seconds}с",
+      "invalid_reset_token": "Токен сброса недействителен или отсутствует. Запросите новую ссылку.",
+      "invalid_credentials": "Неверный логин или пароль",
+      "login_failed": "Ошибка входа",
+      "registration_failed": "Ошибка регистрации",
+      "password_reset_request_failed": "Не удалось запросить сброс пароля",
+      "password_reset_failed": "Не удалось обновить пароль"
+    }
+  },
+  "dashboard": {
+    "brand": "Orbitto",
+    "sign_out": "Выйти",
+    "profile_status": "Статус профиля",
+    "auth_status": "Аутентифицировано через BFF",
+    "completion": "75% завершено"
+  },
+  "common": {
+    "brand": "Orbitto",
+    "loading": "Загрузка...",
+    "language": {
+      "ru": "RU",
+      "en": "EN"
+    }
+  }
+}
+
