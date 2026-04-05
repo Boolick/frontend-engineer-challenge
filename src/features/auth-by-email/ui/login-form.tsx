@@ -15,7 +15,8 @@ import { FloatingInput } from '@/shared/ui/input';
 
 export function LoginForm() {
   const t = useTranslations('auth.login');
-  const { login, isLoading, error, retryAfter } = useAuthByEmail();
+  const { login, isLoading, isCheckingBackend, isBackendAvailable, error, retryAfter } =
+    useAuthByEmail();
 
   const {
     register,
@@ -25,8 +26,8 @@ export function LoginForm() {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (data: LoginFormData) => {
-    login(data);
+  const onSubmit = async (data: LoginFormData) => {
+    await login(data);
   };
 
   return (
@@ -53,8 +54,8 @@ export function LoginForm() {
       <Button
         type="submit"
         className="w-full text-base font-semibold"
-        isLoading={isLoading}
-        disabled={!!retryAfter}
+        isLoading={isLoading || isCheckingBackend}
+        disabled={!!retryAfter || !isBackendAvailable || isCheckingBackend}
       >
         {t('submit')}
       </Button>

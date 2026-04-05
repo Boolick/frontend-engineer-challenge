@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import * as React from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = React.useState(
@@ -13,17 +13,15 @@ export function Providers({ children }: { children: React.ReactNode }) {
             retry: false,
           },
         },
-      })
+      }),
   );
 
   React.useEffect(() => {
     // Cold start mitigation: wake up the backend on mount
-    fetch('/api/auth/health').catch(() => {});
+    fetch("/api/auth/health").catch(() => {});
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-    </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 }

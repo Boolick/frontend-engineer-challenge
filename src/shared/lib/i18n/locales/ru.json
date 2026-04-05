@@ -52,7 +52,8 @@
       "login_failed": "Ошибка входа",
       "registration_failed": "Ошибка регистрации",
       "password_reset_request_failed": "Не удалось запросить сброс пароля",
-      "password_reset_failed": "Не удалось обновить пароль"
+      "password_reset_failed": "Не удалось обновить пароль",
+      "backend_unavailable": "Сервер авторизации временно недоступен. Попробуйте позже."
     }
   },
   "dashboard": {

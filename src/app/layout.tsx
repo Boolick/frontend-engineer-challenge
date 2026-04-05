@@ -5,6 +5,8 @@ import { getLocale } from 'next-intl/server';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
+  title: 'Orbitto Auth',
+  description: 'Authentication system for Orbitto',
   icons: {
     icon: '/favicon.svg',
   },

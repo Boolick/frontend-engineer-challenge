@@ -22,6 +22,16 @@ type ResetPasswordPayload = {
 };
 
 export const sessionApi = {
+  health: async (): Promise<boolean> => {
+    const response = await fetch("/api/auth/health", {
+      cache: "no-store",
+    });
+
+    const result = await response.json().catch(() => ({}));
+
+    return response.ok && result.status === "ok";
+  },
+
   login: async (data: LoginPayload): Promise<{ user: User }> => {
     const response = await fetch("/api/auth/login", {
       method: "POST",
@@ -89,4 +99,3 @@ export const sessionApi = {
     return result;
   },
 };
-

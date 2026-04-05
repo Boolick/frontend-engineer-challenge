@@ -1,7 +1,9 @@
 "use client";
 
+import * as React from "react";
 import { useMachine } from "@xstate/react";
 import { useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 import { sessionApi } from "@/entities/session/api/session.api";
 import { authMachine } from "@/entities/session/model/auth.machine";
 import {
@@ -33,6 +35,10 @@ function getAuthErrorKey(error: AuthApiError, fallbackKey: string) {
     return "rate_limited";
   }
 
+  if (error.status === 503 || error.error === "backend_unavailable") {
+    return "backend_unavailable";
+  }
+
   if (error.error === "invalid credentials") {
     return "invalid_credentials";
   }
@@ -44,7 +50,42 @@ export function useAuthByEmail() {
   const router = useRouter();
   const [state, send] = useMachine(authMachine);
 
+  // Используем React Query для кэширования результата health check
+  // Таким образом, даже при переходе между страницами авторизации,
+  // запрос не будет отправляться повторно, пока не истечет staleTime (в providers.tsx он установлен на 1 минуту)
+  const {
+    data: isBackendAvailable = true,
+    isLoading: isCheckingBackend,
+    refetch: refetchHealth,
+  } = useQuery({
+    queryKey: ["backend-health"],
+    queryFn: async () => {
+      try {
+        return await sessionApi.health();
+      } catch {
+        return false;
+      }
+    },
+    retry: false,
+    refetchOnWindowFocus: false,
+  });
+
+  const error =
+    state.context.error ||
+    (!isCheckingBackend && !isBackendAvailable ? "backend_unavailable" : null);
+
+  const checkBackendHealth = React.useCallback(async () => {
+    const { data } = await refetchHealth();
+    return data ?? false;
+  }, [refetchHealth]);
+
   const login = async (data: LoginFormData) => {
+    const backendAvailable = await checkBackendHealth();
+
+    if (!backendAvailable) {
+      return;
+    }
+
     send({ type: "SUBMIT" });
 
     try {
@@ -67,6 +108,12 @@ export function useAuthByEmail() {
   };
 
   const register = async (data: RegisterFormData) => {
+    const backendAvailable = await checkBackendHealth();
+
+    if (!backendAvailable) {
+      return;
+    }
+
     send({ type: "SUBMIT" });
 
     try {
@@ -95,6 +142,12 @@ export function useAuthByEmail() {
   };
 
   const requestPasswordReset = async (data: ForgotPasswordFormData) => {
+    const backendAvailable = await checkBackendHealth();
+
+    if (!backendAvailable) {
+      return false;
+    }
+
     send({ type: "SUBMIT" });
 
     try {
@@ -120,6 +173,12 @@ export function useAuthByEmail() {
   const resetPassword = async (
     data: ResetPasswordFormData & { token: string },
   ) => {
+    const backendAvailable = await checkBackendHealth();
+
+    if (!backendAvailable) {
+      return;
+    }
+
     send({ type: "SUBMIT" });
 
     try {
@@ -148,10 +207,12 @@ export function useAuthByEmail() {
     logout,
     requestPasswordReset,
     resetPassword,
+    checkBackendHealth,
+    isBackendAvailable,
+    isCheckingBackend,
     isLoading: state.matches("submitting"),
     isSuccess: state.matches("authenticated"),
-    error: state.context.error,
+    error,
     retryAfter: state.context.retryAfter,
   };
 }
-

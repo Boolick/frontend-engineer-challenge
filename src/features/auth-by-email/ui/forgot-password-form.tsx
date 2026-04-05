@@ -17,7 +17,14 @@ import { FloatingInput } from '@/shared/ui/input';
 export function ForgotPasswordForm() {
   const t = useTranslations('auth.forgot_password');
   const [isSubmitted, setIsSubmitted] = React.useState(false);
-  const { requestPasswordReset, isLoading, error, retryAfter } = useAuthByEmail();
+  const {
+    requestPasswordReset,
+    isLoading,
+    isCheckingBackend,
+    isBackendAvailable,
+    error,
+    retryAfter,
+  } = useAuthByEmail();
 
   const {
     register,
@@ -63,8 +70,8 @@ export function ForgotPasswordForm() {
       <Button
         type="submit"
         className="h-12 w-full text-base font-semibold"
-        isLoading={isLoading}
-        disabled={!!retryAfter}
+        isLoading={isLoading || isCheckingBackend}
+        disabled={!!retryAfter || !isBackendAvailable || isCheckingBackend}
       >
         {t('submit')}
       </Button>

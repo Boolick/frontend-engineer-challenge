@@ -20,7 +20,15 @@ function ResetPasswordFormInner() {
   const errorTranslations = useTranslations('auth.errors');
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
-  const { resetPassword, isLoading, error, retryAfter, isSuccess } = useAuthByEmail();
+  const {
+    resetPassword,
+    isLoading,
+    isCheckingBackend,
+    isBackendAvailable,
+    error,
+    retryAfter,
+    isSuccess,
+  } = useAuthByEmail();
 
   const {
     register,
@@ -30,12 +38,12 @@ function ResetPasswordFormInner() {
     resolver: zodResolver(resetPasswordSchema),
   });
 
-  const onSubmit = (data: ResetPasswordFormData) => {
+  const onSubmit = async (data: ResetPasswordFormData) => {
     if (!token) {
       return;
     }
 
-    resetPassword({ ...data, token });
+    await resetPassword({ ...data, token });
   };
 
   if (isSuccess) {
@@ -83,8 +91,8 @@ function ResetPasswordFormInner() {
       <Button
         type="submit"
         className="w-full text-base font-semibold"
-        isLoading={isLoading}
-        disabled={!!retryAfter}
+        isLoading={isLoading || isCheckingBackend}
+        disabled={!!retryAfter || !isBackendAvailable || isCheckingBackend}
       >
         {t('submit')}
       </Button>
