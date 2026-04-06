@@ -89,7 +89,7 @@ src/
 
 Логика аутентификации слишком сложна для обычных `isLoading` и `isError`. Использование XState гарантирует, что UI никогда не окажется в неконсистентном состоянии.
 
-![State Machine Architecture](МЕСТО_ДЛЯ_СКРИНШОТА_STATE_MACHINE)
+![State Machine Architecture](public/screenshots/auth-machine.png)
 
 **Основные состояния:**
 
@@ -99,6 +99,8 @@ src/
 - `rateLimited`: Слишком много попыток. Запускается внутренний актор-таймер, отсчитывающий секунды до следующей попытки (события `TICK`), который отображается прямо в UI.
 
 ### Глобальная Error Machine (`entities/error/model/error.machine.ts`)
+
+![Global Error Machine](public/screenshots/error-machine.png)
 
 Вторая XState-машина, работающая параллельно с `authMachine`, отвечает за **глобальные ошибки** — те, которые не привязаны к конкретному полю формы (`backend_unavailable`, `rate_limited`, `unknown_error`). Это позволяет избежать добавления новых зависимостей (Zustand, Redux) — XState уже присутствует в проекте.
 
@@ -315,6 +317,12 @@ it("should transition to rateLimited and handle countdown timer correctly", () =
 2. **Telemetry / error tracking:** в runtime-решение не включались Sentry/OpenTelemetry, потому что для челленджа важнее было показать устойчивость UX и корректную интеграцию с backend. При этом в production-версии observability я считаю обязательным следующим шагом.
 3. **Микрофронты:** для локального auth-модуля это был бы неоправданный рост сложности. В данном контексте отказ от микрофронтов — осознанное инженерное решение, а не упущение.
 
+### 4. Производительность и Vital Signs
+
+Проект демонстрирует высокие показатели производительности благодаря использованию Next.js App Router, оптимизации ассетов и легковесных анимаций. Все ключевые метрики Core Web Vitals (LCP, FID, CLS) находятся в "зеленой зоне", что подтверждается аудитом Lighthouse.
+
+![Lighthouse Audit](public/screenshots/vitals.png)
+
 ---
 
 ## 🔮 Следующие шаги (Production)
@@ -333,5 +341,4 @@ it("should transition to rateLimited and handle countdown timer correctly", () =
 - **Backend Fork:** [Vantany/engineer-challenge](https://github.com/Vantany/engineer-challenge)
 - **Moodboard:** [Ссылка на Pinterest Moodboard] (заполнить перед отправкой)
 - **Anti-Moodboard:** [Ссылка на Pinterest Anti-Moodboard] (заполнить перед отправкой)
-- **Демо / Скринкаст:** [Ссылка на видео/демо, если применимо]
-  ![Lighthouse](image.png)
+- **Демо / Скринкаст:** [Ссылка на видео/демо, если применимо]
