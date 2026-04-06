@@ -25,15 +25,15 @@ export function AuthLayout({
 
   return (
     <main className="min-h-screen flex flex-col lg:flex-row bg-background">
-      <section className="w-full lg:w-[45%] flex flex-col p-8 lg:p-16">
-        <div className="mb-12 flex items-center justify-between">
+      <section className="w-full lg:w-[45%] flex flex-col px-8 pb-8 pt-4 lg:px-16 lg:pb-16 lg:pt-4">
+        <div className="mb-8 flex items-center justify-between">
           <div className="flex items-center">
             <Image
               src="/logo.svg"
               alt="Orbitto Logo"
               width={200}
               height={40}
-              priority
+              loading="eager"
             />
           </div>
           <div className="relative z-50">
@@ -64,17 +64,15 @@ export function AuthLayout({
       </section>
 
       <section className="hidden lg:flex w-[55%] bg-background-illustration relative items-center justify-center overflow-hidden">
-        <div className="absolute w-32 h-32 bg-primary rounded-full blur-[40px] opacity-80 top-1/4 left-1/4" />
-        <div className="absolute w-24 h-24 bg-primary rounded-full blur-[30px] opacity-70 bottom-[20%] right-[30%]" />
-        <div className="absolute w-16 h-16 bg-primary rounded-full blur-[20px] opacity-60 top-[30%] right-[25%]" />
-        <div
-          className="absolute w-[450px] h-[450px] rounded-full bg-white/40 flex items-center justify-center"
-          style={{
-            backdropFilter: "blur(var(--backdrop-blur-glass))",
-            borderColor: "var(--color-glass-border)",
-            borderWidth: "1px",
-            borderStyle: "solid",
-          }}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/auth-illustration.svg"
+          alt="Authentication Illustration"
+          width={512}
+          height={480}
+          className="w-full max-w-[512px] h-auto relative z-10"
+          fetchPriority="high"
+          decoding="async"
         />
       </section>
     </main>

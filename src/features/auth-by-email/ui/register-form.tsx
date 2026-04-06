@@ -15,7 +15,14 @@ import { FloatingInput } from '@/shared/ui/input';
 
 export function RegisterForm() {
   const t = useTranslations('auth.register');
-  const { register: registerUser, isLoading, error, retryAfter } = useAuthByEmail();
+  const {
+    register: registerUser,
+    isLoading,
+    isCheckingBackend,
+    isBackendAvailable,
+    error,
+    retryAfter,
+  } = useAuthByEmail();
 
   const {
     register,
@@ -25,8 +32,8 @@ export function RegisterForm() {
     resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = (data: RegisterFormData) => {
-    registerUser(data);
+  const onSubmit = async (data: RegisterFormData) => {
+    await registerUser(data);
   };
 
   return (
@@ -60,8 +67,8 @@ export function RegisterForm() {
       <Button
         type="submit"
         className="w-full text-base font-semibold"
-        isLoading={isLoading}
-        disabled={!!retryAfter}
+        isLoading={isLoading || isCheckingBackend}
+        disabled={!!retryAfter || !isBackendAvailable || isCheckingBackend}
       >
         {t('submit')}
       </Button>

@@ -52,7 +52,7 @@ const FloatingInput = React.forwardRef<HTMLInputElement, InputProps>(
           />
           <label
             className={cn(
-              "absolute top-2 -z-0 origin-[0] -translate-y-6 scale-75 transform duration-300 pointer-events-none",
+              "absolute left-0 top-2 -z-0 origin-left -translate-y-6 scale-75 transform duration-300 pointer-events-none transition-transform",
               "peer-placeholder-shown:translate-y-1 peer-placeholder-shown:scale-100",
               "peer-focus:-translate-y-6 peer-focus:scale-75",
               error

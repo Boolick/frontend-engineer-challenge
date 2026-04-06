@@ -1,43 +1,64 @@
-import createIntlMiddleware from 'next-intl/middleware';
-import { NextResponse, type NextRequest } from 'next/server';
-import { routing } from './shared/lib/i18n/routing';
+import createIntlMiddleware from "next-intl/middleware";
+import { NextResponse, type NextRequest } from "next/server";
+import { routing } from "./shared/lib/i18n/routing";
 
 const intlMiddleware = createIntlMiddleware(routing);
 
 export function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  const { pathname, search } = request.nextUrl;
 
-  // Skip i18n for API routes
-  if (pathname.startsWith('/api')) {
+  // 1. Мгновенно пропускаем системные запросы и статику
+  if (
+    pathname.startsWith("/_next") ||
+    pathname.includes("/api/") ||
+    pathname.split("/").pop()?.includes(".") // Проверка на расширение файла
+  ) {
     return NextResponse.next();
   }
 
-  // Handle internationalization first
+  // 2. Получаем текущую локаль из пути (если она есть)
+  const segments = pathname.split("/");
+  const currentLocale = routing.locales.includes(segments[1] as any)
+    ? segments[1]
+    : routing.defaultLocale;
+
+  // 3. Сначала даем отработать i18n middleware
   const response = intlMiddleware(request);
 
-  // If intlMiddleware redirects or does something special, use its response
-  // Otherwise, continue with auth logic
-  
-  const accessToken = request.cookies.get('accessToken');
+  // 4. Проверка авторизации
+  const accessToken = request.cookies.get("accessToken");
+  const isDashboard = pathname.match(/^\/(ru|en)?\/?dashboard/);
+  const isAuthPage = pathname.match(/^\/(ru|en)?\/?(login|register)/);
 
-  // Protected routes
-  if (pathname.startsWith('/dashboard') || pathname.startsWith('/ru/dashboard') || pathname.startsWith('/en/dashboard')) {
-    if (!accessToken) {
-      return NextResponse.redirect(new URL('/login', request.url));
-    }
+  // Функция для создания редиректа с сохранением локали и параметров (RSC)
+  const createRedirect = (targetPath: string) => {
+    // Важно: добавляем локаль в путь, чтобы избежать 307 от next-intl
+    const url = new URL(`/${currentLocale}${targetPath}`, request.url);
+    url.search = search; // Сохраняем ?_rsc=... и другие параметры
+    return NextResponse.redirect(url);
+  };
+
+  if (isDashboard && !accessToken) {
+    return createRedirect("/login");
   }
 
-  // Auth routes (redirect to dashboard if already logged in)
-  if (pathname === '/login' || pathname === '/register' || pathname === '/ru/login' || pathname === '/en/login' || pathname === '/ru/register' || pathname === '/en/register') {
-    if (accessToken) {
-      return NextResponse.redirect(new URL('/dashboard', request.url));
-    }
+  if (isAuthPage && accessToken) {
+    return createRedirect("/dashboard");
   }
 
   return response;
 }
 
 export const config = {
-  // Combine next-intl and auth matchers
-  matcher: ['/', '/(ru|en)/:path*', '/((?!_next|_vercel|.*\\..*).*)', '/dashboard/:path*', '/login', '/register'],
+  // Исключаем лишнее через matcher, чтобы Middleware даже не вызывался для картинок
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
+    "/((?!api|_next/static|_next/image|favicon.ico|favicon.svg|.*\\..*).*)",
+  ],
 };
