@@ -4,7 +4,7 @@
 
 В этом проекте я сделал упор на три ключевых аспекта: инженерную зрелость (FSD), типобезопасность и управление сложными состояниями (XState v5).
 
-**Backend Fork:** [Vantany/engineer-challenge](https://github.com/Vantany/engineer-challenge)
+**Backend Fork:** [Boolick/backend-engineer-challenge](https://github.com/Boolick/backend-engineer-challenge)
 *Обоснование выбора:* Данный бэкенд полностью соответствует критериям `backend-engineer-challenge`, предоставляет прозрачный API-gate (gRPC + HTTP Gateway) и поддерживает Docker Compose, что гарантирует простоту запуска и надежность интеграции.
 
 
@@ -160,7 +160,7 @@ src/
 
 - Node.js 20 или выше
 - npm (или yarn/pnpm)
-- Запущенный инстанс Go-бэкенда (см. [репозиторий бэкенда](https://github.com/Vantany/engineer-challenge) для инструкций по запуску через Docker Compose).
+- Запущенный инстанс Go-бэкенда (см. [репозиторий бэкенда](https://github.com/Boolick/backend-engineer-challenge) для инструкций по запуску через Docker Compose).
 
 ---
 
@@ -344,4 +344,4 @@ it("should transition to rateLimited and handle countdown timer correctly", () =
 
 ## 🔗 Ссылки и материалы
 
-- **Backend Fork:** [Vantany/engineer-challenge](https://github.com/Vantany/engineer-challenge)
+- **Backend Fork:** [Boolick/backend-engineer-challenge](https://github.com/Boolick/backend-engineer-challenge)
