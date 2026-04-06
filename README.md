@@ -100,7 +100,7 @@ src/
 
 ### Глобальная Error Machine (`entities/error/model/error.machine.ts`)
 
-Вторая XState-машина, работающая параллельно с `authMachine`, отвечает за **глобальные ошибки** — те, которые не привязаны к конкретному полю формы (``backend_unavailable``, ``rate_limited``, ``unknown_error``). Это позволяет избежать добавления новых зависимостей (Zustand, Redux) — XState уже присутствует в проекте.
+Вторая XState-машина, работающая параллельно с `authMachine`, отвечает за **глобальные ошибки** — те, которые не привязаны к конкретному полю формы (`backend_unavailable`, `rate_limited`, `unknown_error`). Это позволяет избежать добавления новых зависимостей (Zustand, Redux) — XState уже присутствует в проекте.
 
 **Состояния:**
 
@@ -277,12 +277,12 @@ it("should transition to rateLimited and handle countdown timer correctly", () =
 
 **Решение:** Ошибки обрабатываются на 4 уровнях:
 
-| Слой | Где | Ответственность |
-|------|-----|------------------|
-| **BFF Normalization** | `app/api/auth/_lib/map-error.ts` | Маппинг «сырых» backend-ответов в `NormalizedError` |
-| **XState errorMachine** | `entities/error/model/error.machine.ts` | Глобальная очередь уведомлений (toast/banner) |
-| **Error Router** | `features/auth-by-email/model/use-auth-by-email.ts` | Классификация ошибок → `field`/`toast`/`banner` |
-| **UI Layer** | `shared/ui/error/error-notification-layer.tsx` | Анимированные уведомления с `aria-live` |
+| Слой                    | Где                                                 | Ответственность                                     |
+| ----------------------- | --------------------------------------------------- | --------------------------------------------------- |
+| **BFF Normalization**   | `app/api/auth/_lib/map-error.ts`                    | Маппинг «сырых» backend-ответов в `NormalizedError` |
+| **XState errorMachine** | `entities/error/model/error.machine.ts`             | Глобальная очередь уведомлений (toast/banner)       |
+| **Error Router**        | `features/auth-by-email/model/use-auth-by-email.ts` | Классификация ошибок → `field`/`toast`/`banner`     |
+| **UI Layer**            | `shared/ui/error/error-notification-layer.tsx`      | Анимированные уведомления с `aria-live`             |
 
 ### 8. Персистентный Rate-Limit Timer (Cookie Sync)
 
@@ -292,7 +292,7 @@ it("should transition to rateLimited and handle countdown timer correctly", () =
 - **Hook (`useAuthByEmail.ts`)**: При монтировании проверяет наличие куки, вычисляет остаток времени и отправляет событие `RATE_LIMITED` в XState-машину.
 - **XState**: Подхватывает значение и продолжает отсчет.
 
-**Обоснование:** Это позволяет избежать использования `sessionStorage` и гарантирует, что пользователь видит *реальное* время до следующей попытки, даже если он решил сменить язык перед повторным входом. Кука саморазрушается по истечении времени лимита.
+**Обоснование:** Это позволяет избежать использования `sessionStorage` и гарантирует, что пользователь видит _реальное_ время до следующей попытки, даже если он решил сменить язык перед повторным входом. Кука саморазрушается по истечении времени лимита.
 
 ---
 
