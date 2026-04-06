@@ -52,6 +52,13 @@ export const authMachine = setup({
     idle: {
       on: {
         SUBMIT: { target: 'submitting', actions: 'clearError' },
+        RATE_LIMITED: {
+          target: 'rateLimited',
+          actions: assign({
+            retryAfter: ({ event }) => event.retryAfter,
+            error: 'rate_limited',
+          }),
+        },
       },
     },
     submitting: {

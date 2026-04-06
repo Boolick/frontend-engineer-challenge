@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import { mapBackendError, errorResponse } from '../../_lib/map-error';
 
 const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:8080';
 
@@ -16,10 +17,7 @@ export async function POST(request: Request) {
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok) {
-      return NextResponse.json(
-        { error: data.error || data.message || 'Password reset failed' },
-        { status: response.status }
-      );
+      return errorResponse(mapBackendError(data, response.status, response.headers));
     }
 
     const cookieStore = await cookies();
@@ -43,9 +41,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ user: data.session.user });
   } catch (error) {
     console.error('Password reset error:', error);
-    return NextResponse.json(
-      { error: 'backend_unavailable' },
-      { status: 503 }
-    );
+    return errorResponse(mapBackendError(null, 503));
   }
 }
