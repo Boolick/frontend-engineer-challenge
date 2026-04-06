@@ -26,6 +26,9 @@
 
 **Trade-off:** Дополнительная сложность конфигурации (SSR/RSC/Route Handlers), дополнительный сетевой хоп Client → Next.js → Go (≈5-10мс). Для auth-запросов это абсолютно неощутимо.
 
+**Выбор бэкенд-форка:** [Boolick/backend-engineer-challenge](https://github.com/Boolick/backend-engineer-challenge). Этот репозиторий был выбран, так как он полностью соответствует критериям `backend-engineer-challenge`, предоставляет прозрачный API-gate и включает Docker-конфигурацию для максимально простого запуска.
+
+
 ---
 
 ## [2026-04-02] — Управление состоянием: XState vs Zustand
