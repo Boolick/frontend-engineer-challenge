@@ -5,10 +5,7 @@
 В этом проекте я сделал упор на три ключевых аспекта: инженерную зрелость (FSD), типобезопасность и управление сложными состояниями (XState v5).
 
 **Backend Fork:** [Boolick/backend-engineer-challenge](https://github.com/Boolick/backend-engineer-challenge)
-*Обоснование выбора:* Данный бэкенд полностью соответствует критериям `backend-engineer-challenge`, предоставляет прозрачный API-gate (gRPC + HTTP Gateway) и поддерживает Docker Compose, что гарантирует простоту запуска и надежность интеграции.
-
-
-
+_Обоснование выбора:_ Данный бэкенд полностью соответствует критериям `backend-engineer-challenge`, предоставляет прозрачный API-gate (gRPC + HTTP Gateway) и поддерживает Docker Compose, что гарантирует простоту запуска и надежность интеграции.
 
 ---
 
@@ -94,7 +91,8 @@ src/
 Логика аутентификации слишком сложна для обычных `isLoading` и `isError`. Использование XState гарантирует, что UI никогда не окажется в неконсистентном состоянии.
 
 ![State Machine Architecture](public/screenshots/auth-machine.png)
-![Auth Machine Visualization](https://stately.ai/registry/editor/embed/8c6a0dad-d15a-4f24-97c6-bff2699fb74a?machineId=590bd27d-c97f-4142-90e7-a7f910e3a934)
+
+[Auth Machine Visualization](https://stately.ai/registry/editor/embed/8c6a0dad-d15a-4f24-97c6-bff2699fb74a?machineId=590bd27d-c97f-4142-90e7-a7f910e3a934)
 
 **Основные состояния:**
 
@@ -106,7 +104,8 @@ src/
 ### Глобальная Error Machine (`entities/error/model/error.machine.ts`)
 
 ![Global Error Machine](public/screenshots/error-machine.png)
-![Error Machine Visualization](https://stately.ai/registry/editor/embed/8c6a0dad-d15a-4f24-97c6-bff2699fb74a?mode=design&machineId=f78824a0-84bd-41f5-aa32-21d1686d6162)
+
+[Error Machine Visualization](https://stately.ai/registry/editor/embed/8c6a0dad-d15a-4f24-97c6-bff2699fb74a?mode=design&machineId=f78824a0-84bd-41f5-aa32-21d1686d6162)
 
 Вторая XState-машина, работающая параллельно с `authMachine`, отвечает за **глобальные ошибки** — те, которые не привязаны к конкретному полю формы (`backend_unavailable`, `rate_limited`, `unknown_error`). Это позволяет избежать добавления новых зависимостей (Zustand, Redux) — XState уже присутствует в проекте.
 
